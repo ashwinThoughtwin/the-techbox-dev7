@@ -1,4 +1,3 @@
-from pathlib import Path
 import os
 import sys
 from unipath import Path
@@ -39,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_auth',
-    'app_gadgets'
+    'app_gadgets',
+    'crispy_forms'
 
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
