@@ -1,0 +1,20 @@
+{% extends 'navbar.html' %}
+
+{% block title_block %} Tool_Added Page {% endblock %}
+
+{% block body_block %}
+
+    <br>
+    <br>
+
+<h3 class="p-3 mb-2 bg-primary text-white" style = 'font-size: 50px;text-align:center;'>Tool Added Successfully To Your TechBox!</h3>
+<br><br>
+<div class="options" style="text-align:center">
+  <a href="{% url 'app_gadgets:addtool' %}" class="btn btn-outline-success btn-lg " role="button" aria-pressed="true">Click here to add more Tools</a><br><br>
+
+<a href="{% url 'app_gadgets:toollist' %}" class="btn btn-outline-success btn-lg " role="button" aria-pressed="true">Click here to view Tools in Your TechBox</a><br><br>
+
+</div>
+<br>
+
+{% endblock %}

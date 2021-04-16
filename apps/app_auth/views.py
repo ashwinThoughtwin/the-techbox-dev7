@@ -18,7 +18,7 @@ def login_user(request):
 
             if user is not None:
                 login(request, user)
-                return HttpResponse("You are Logged In Successfully.")
+                return render(request, 'app_gadgets/adminafterlogin.html')
 
     return render(request, "app_auth/login.html", context={'form': form})
 

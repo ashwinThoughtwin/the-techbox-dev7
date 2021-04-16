@@ -1,0 +1,40 @@
+{% extends 'navbar.html' %}
+{% load crispy_forms_tags %}
+
+{% block css_block %}
+<style>
+.tool{
+    width: 550px;
+    border: 1px solid #ccc;
+    padding: 40px;
+}
+
+</style>
+{% endblock %}
+{% block title_block %} Add-Tool Page {% endblock %}
+
+
+{% block body_block %}
+<br><br>
+<center>
+<div class="tool">
+
+    <h3><strong>Add Tools To Your TechBox</strong></h3>
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br>
+        <button type="submit" class="btn btn-success btn-sm" style="width:100%">Add Techtool</button>
+    </form>
+
+
+</div>
+
+
+    <br><br>
+    </center>
+
+
+
+  {% endblock %}

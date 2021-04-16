@@ -41,10 +41,19 @@ class Tool(models.Model):
         ('charger', 'Charger')
     ]
     name = models.CharField(max_length=30, choices=tool_choice, default='headphone')
-    issue_date = models.DateField(auto_now=True)
-    expire_date = models.DateField(default=exp_date)
+    issue_date = models.DateField(auto_now=True, blank=True, null=True)
+    expire_date = models.DateField(default=exp_date, blank=True, null=True)
     borrower = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.name) + " " + str(self.borrower)
 
+
+class TechBox(models.Model):
+    name = models.CharField(max_length=50, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "TechBox"
