@@ -1,3 +1,4 @@
 media/
 *.pyc
 **/migrations
+db.sqlite3
