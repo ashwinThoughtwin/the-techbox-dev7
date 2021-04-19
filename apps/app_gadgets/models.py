@@ -5,18 +5,19 @@ from datetime import datetime, timedelta
 
 class Employee(models.Model):
     dept_choice = [
-        ('python', 'Python'),
-        ('reactjs', 'ReactJS'),
-        ('ror', 'ROR'),
-        ('bd', 'Business Development')
+        ('Python', 'Python'),
+        ('ReactJS', 'ReactJS'),
+        ('ROR', 'ROR'),
+        ('Business Development', 'Business Development')
     ]
 
     city_choice = [
-        ('neemuch', 'Neemuch'),
-        ('indore', 'Indore')
+        ('Neemuch', 'Neemuch'),
+        ('Indore', 'Indore')
     ]
     name = models.CharField(max_length=60, blank=False)
     email = models.EmailField(unique=True,null=False, blank=False)
+    emp_code = models.CharField(max_length=10, unique=True)
     department = models.CharField(max_length=40, choices=dept_choice, default='python')
     address = models.TextField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=100, choices=city_choice, default='indore')
@@ -30,30 +31,26 @@ class Employee(models.Model):
 def exp_date():
     return datetime.today() + timedelta(days=10)
 
-
-class Tool(models.Model):
-    tool_choice = [
-        ('headphone', 'Headphone'),
-        ('cpu', 'CPU'),
-        ('mouse', 'Mouse'),
-        ('connector', '2 Way Connector'),
-        ('monitor', 'Monitor'),
-        ('charger', 'Charger')
-    ]
-    name = models.CharField(max_length=30, choices=tool_choice, default='headphone')
-    issue_date = models.DateField(auto_now=True, blank=True, null=True)
-    expire_date = models.DateField(default=exp_date, blank=True, null=True)
-    borrower = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return str(self.name) + " " + str(self.borrower)
-
-
 class TechBox(models.Model):
     name = models.CharField(max_length=50, blank=False)
+    available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name_plural = "TechBox"
+
+
+class IssueGadget(models.Model):
+    gadget_name = models.ForeignKey(TechBox, on_delete=models.SET_NULL, null=True)
+    issue_date = models.DateField(auto_now=True, null=True)
+    expire_date = models.DateField(default=exp_date)
+    emp_code = models.CharField(max_length=40)
+    # borrower = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name_plural = "IssueGadget"
+
+    def __str__(self):
+        return str(self.gadget_name) + " " + str(self.emp_code) + " " + str(self.issue_date)
