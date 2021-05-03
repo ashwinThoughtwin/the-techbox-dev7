@@ -23,10 +23,11 @@ class AddEmployeeForm(forms.ModelForm):
 
 
 class IssueToolForm(forms.ModelForm):
-    emp_code = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'Enter Emp ID'}))
+    emp_code = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'Enter Emp ID'}, ))
+    email = forms.EmailField(max_length=50, label="", widget=forms.EmailInput(attrs={'placeholder':  "Enter Email ID"}))
     class Meta:
         model = IssueGadget
-        fields = ['gadget_name', 'emp_code']
+        fields = ['gadget_name', 'email', 'emp_code']
         labels = {'gadget_name': 'Select Gadget'}
 
 

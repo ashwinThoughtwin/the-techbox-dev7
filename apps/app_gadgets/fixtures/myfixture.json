@@ -1,0 +1,11 @@
+[
+  {
+    "model": "app_gadgets.TechBox",
+    "pk": 15,
+    "fields": {
+      "name": "Qwerty",
+      "available": "True"
+
+    }
+  }
+]

@@ -158,14 +158,19 @@ a.socialIcon:hover,
             <div class="card">
                 <form  class="box" method="POST">
                     {% csrf_token %}
-                    <h1>Login</h1>
+                    <h1>TechBox Login</h1>
+                    {% for message in messages %}
 
-                    <p class="text-muted"> Please enter your login and password!</p>
-<!--                    <input type="text" name="username" placeholder="Username">-->
-<!--                    <input type="password" name="password" placeholder="Password">-->
-                    {{ form }}
+                    <h6 style="color:white;">{{ message }}</h6>
+
+                    {% endfor %}
+
+<!--                    <p class="text-muted"> Please enter your login and password!</p>-->
+                    <input type="text" name="username" placeholder="Username">
+                    <input type="password" name="password" placeholder="Password">
+<!--                    {{ form }}-->
 <!--                    <a class="forgot text-muted" href="#">Forgot password?</a>-->
-                    <input type="submit" name="" value="Login" href="">
+                    <input type="submit" name="" value="Login">
 
                     <div class="col-md-12">
                         <ul class="social-network social-circle">

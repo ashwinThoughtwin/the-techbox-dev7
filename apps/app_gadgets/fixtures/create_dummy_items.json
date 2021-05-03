@@ -1,0 +1,20 @@
+[
+  {
+    "model": "app_gadgets.TechBox",
+    "pk": 13,
+    "fields": {
+      "name": "XYZDFGG",
+      "available": "True"
+
+    }
+  },
+  {
+    "model": "app_gadgets.TechBox",
+    "pk": 14,
+    "fields": {
+      "name": "XYZ",
+      "available": "False"
+
+    }
+  }
+]

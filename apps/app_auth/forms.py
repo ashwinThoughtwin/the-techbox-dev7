@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    username = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'Username', 'autofocus': True}))
     password = forms.CharField(max_length=100, label="", widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
     def clean(self):

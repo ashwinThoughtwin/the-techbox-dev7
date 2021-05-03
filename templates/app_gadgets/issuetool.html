@@ -8,8 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Page Title - SB Admin</title>
+        <title>IssueGadget Page</title>
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-primary">
@@ -22,7 +26,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Issue Gadgets To Our Member</h3></div>
                                     <div class="card-body">
-                                        <form method="POST">
+                                        <form method="POST" id="issuetool_form">
                                             {% csrf_token %}
                                             {{ form|crispy }}
 <!--                                            <div class="form-row">-->
@@ -84,8 +88,34 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+<!--        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/scripts.js' %}"></script>
+        <script type="text/javascript">
+            $(".btn").click(function(e){
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "{% url 'app_gadgets:issue_gadget' %}",
+            data:{
+                  name: $('#id_gadget_name').val(),
+                  email: $('#id_email').val(),
+                  emp_code: $('#id_emp_code').val(),
+                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                  },
+            success:function(response){
+            if(response.response == "Available"){
+              alert("Selected Gadget Is Issued To You.");
+              window.location = "http://localhost:8000/gadgets/dashboard/";
+
+            }
+            else{
+              alert("Selected Gadget Is Not Available.");
+              document.getElementById("issuetool_form").reset();
+            }
+            }
+            })
+            });
+        </script>
     </body>
 </html>

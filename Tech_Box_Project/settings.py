@@ -1,6 +1,14 @@
 import os
 import sys
 from unipath import Path
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://6b5bfc3614f44547a2f28c2c528b4a36@o588927.ingest.sentry.io/5739266",
+    integrations=[DjangoIntegration()])
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -40,7 +48,9 @@ INSTALLED_APPS = [
     'app_auth',
     'app_gadgets',
     'crispy_forms',
-
+    'django_celery_beat',
+    'rest_framework',
+    'rest_framework.authtoken',
 
 ]
 
@@ -49,7 +59,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -106,6 +118,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -130,3 +150,54 @@ STATICFILES_DIRS = [STATIC_DIR]
 #media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'vaibhav.thoughtwin@gmail.com'
+EMAIL_HOST_PASSWORD = 'vaibhav12345'
+EMAIL_USE_SSL = False
+
+
+# CELERY_BEAT_SCHEDULE = {
+#     "scheduled_task":{
+#         "task": "app_gadgets.tasks.add",
+#         "schedule": 5.0,
+#         "args": (10, 5),
+#     },
+# }
+
+# Cache Settings
+
+# CACHE_MIDDLEWARE_SECONDS = 30
+
+# Database Caching.
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my_cache_table',
+#     }
+# }
+
+# File System Caching.
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': r'C:\Users\HP\Desktop\django_1\Tech_Box_Project\cache',
+    }
+}
+
+# Local Memory Caching.
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'unique-snowflake',
+#     }
+# }
+
+

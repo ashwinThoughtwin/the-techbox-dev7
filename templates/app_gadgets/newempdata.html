@@ -1,0 +1,10 @@
+                                            <tr>
+                                                <td>{{ emp.name }}</td>
+                                                <td>{{ emp.emp_code }}</td>
+                                                <td>{{ emp.department }}</td>
+                                                <td>{{ emp.city }}</td>
+                                                <td>{{ emp.phone }}</td>
+                                                <td><a href="{% url 'app_gadgets:update_emp' code=emp.emp_code %}" class="btn btn-primary btn-sm">Update</a></td>
+                                                 <td><a href="" class="btn btn-danger btn-sm btn-del" data-sid="{{ emp.emp_code }}">Delete</a></td>
+<!--                                                <td>$183,000</td>-->
+                                            </tr>

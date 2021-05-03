@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta
 
+
 # Create your models here.
 
 class Employee(models.Model):
@@ -24,12 +25,14 @@ class Employee(models.Model):
     phone = models.CharField(max_length=20, blank=False)
     date_joined = models.DateField(auto_now_add=True)
 
-    def __str__(self):
-        return str(self.name) + " " + str(self.email)
+    # def __str__(self):
+    #     return str(self.name) + " " + str(self.email)
 
+    class Meta:
+        app_label = 'app_gadgets'
 
-def exp_date():
-    return datetime.today() + timedelta(days=10)
+        ordering = ['-emp_code']
+
 
 class TechBox(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -41,16 +44,23 @@ class TechBox(models.Model):
     class Meta:
         verbose_name_plural = "TechBox"
 
+def exp_date():
+    return datetime.today() + timedelta(minutes=10)
 
 class IssueGadget(models.Model):
     gadget_name = models.ForeignKey(TechBox, on_delete=models.SET_NULL, null=True)
     issue_date = models.DateField(auto_now=True, null=True)
-    expire_date = models.DateField(default=exp_date)
+    expire_date = models.DateTimeField(default=exp_date)
     emp_code = models.CharField(max_length=40)
     # borrower = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name_plural = "IssueGadget"
 
+
+
+
     def __str__(self):
         return str(self.gadget_name) + " " + str(self.emp_code) + " " + str(self.issue_date)
+
+
