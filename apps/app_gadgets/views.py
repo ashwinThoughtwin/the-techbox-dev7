@@ -11,8 +11,60 @@ from django.views.generic.base import TemplateView
 from .tasks import send_confirm_email_task, send_remember_email_task
 from django.utils.decorators import method_decorator
 from django.views import View
+import stripe
+from django.conf import settings
 from django.views.decorators.cache import cache_page
 # Create your views here.
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+YOUR_DOMAIN = 'http://localhost:8000'
+
+class CreateCheckoutSessionView(View):
+    def post(self, *args, **kwargs):
+        product_id = self.kwargs["pk"]
+        product = TechBox.objects.get(id=product_id)
+        print(product)
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': product.price,
+                        'product_data': {
+                            'name': product.name,
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/gadgets/success',
+            cancel_url=YOUR_DOMAIN + '/gadgets/cancel',
+        )
+        return JsonResponse({'id': checkout_session.id})
+
+
+class ProductLandingPageView(TemplateView):
+    template_name = "app_gadgets/landing.html"
+
+    def get_context_data(self, **kwargs):
+        id = self.kwargs['pk']
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['product'] = TechBox.objects.get(id=id)
+        return context
+
+class SuccessView(TemplateView):
+    template_name = 'app_gadgets/success.html'
+
+
+class CancelView(TemplateView):
+    template_name = 'app_gadgets/cancel.html'
+
 
 decorators = [login_required]
 @method_decorator(decorators, name="dispatch")
@@ -181,6 +233,9 @@ class IssueTableView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['issued_gadget_data'] = IssueGadget.objects.all()
         return context
+
+
+
 
 
 #---------------------------FUNCTION BASED VIEWS-------------------------------------------------------------

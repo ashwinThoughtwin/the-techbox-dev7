@@ -37,6 +37,7 @@ class Employee(models.Model):
 class TechBox(models.Model):
     name = models.CharField(max_length=50, blank=False)
     available = models.BooleanField(default=True)
+    price = models.IntegerField(default=10)
 
     def __str__(self):
         return self.name

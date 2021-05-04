@@ -14,7 +14,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 @admin.register(TechBox)
 class TechBoxAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'available')
+    list_display = ('id', 'name', 'price', 'available')
 
 
 @admin.register(IssueGadget)

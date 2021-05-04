@@ -167,7 +167,7 @@
                                                 {% else %}
                                                 <td><center><a href="" class="btn btn-danger btn-sm">Not Available</a></center></td>
                                                 {% endif %}
-                                                <td><center><a href="" class="btn btn-outline-primary btn-sm">Purchase</a></center></td>
+                                                <td><center><a href="{% url 'app_gadgets:product_landing_page' pk=gadget.id %}" class="btn btn-outline-primary btn-sm">Purchase</a></center></td>
                                                 <td><center><a href="" class="btn btn-outline-danger btn-sm btn-del" data-sid={{ gadget.id }}>Remove</a></center></td>
 
                                             </tr>

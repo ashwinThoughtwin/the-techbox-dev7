@@ -24,7 +24,15 @@ urlpatterns = [
 
     path('issue_gadget_api/', api_views.IssueGadgetAPI.as_view(), name='issue_gadget_api'),
 
-    path('gettoken/', obtain_auth_token)
+    path('gettoken/', obtain_auth_token),
+
+    path('product_landing_page/<pk>', views.ProductLandingPageView.as_view(), name="product_landing_page"),
+
+    path('create-checkout-session/<pk>/', views.CreateCheckoutSessionView.as_view(), name="create-checkout-session"),
+
+    path('cancel/', views.CancelView.as_view(), name="cancel"),
+    path('success/', views.SuccessView.as_view(), name="success"),
+
 
 ]
 
