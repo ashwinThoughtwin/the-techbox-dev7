@@ -1,0 +1,1 @@
+web: waitress-serve --port=$PORT Tech_Box_Project.wsgi:application
