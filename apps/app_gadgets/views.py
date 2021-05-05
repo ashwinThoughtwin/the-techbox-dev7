@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddToolForm, AddEmployeeForm, IssueToolForm, UpdateToolForm
 from django.contrib.auth.decorators import login_required
@@ -14,6 +14,7 @@ from django.views import View
 import stripe
 from django.conf import settings
 from django.views.decorators.cache import cache_page
+
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -30,8 +31,8 @@ class CreateCheckoutSessionView(View):
             line_items=[
                 {
                     'price_data': {
-                        'currency': 'usd',
-                        'unit_amount': product.price,
+                        'currency': 'inr',
+                        'unit_amount': product.price * 100,
                         'product_data': {
                             'name': product.name,
                             # 'images': ['https://i.imgur.com/EHyR2nP.png'],
@@ -58,6 +59,7 @@ class ProductLandingPageView(TemplateView):
         context['product'] = TechBox.objects.get(id=id)
         return context
 
+
 class SuccessView(TemplateView):
     template_name = 'app_gadgets/success.html'
 
@@ -67,6 +69,8 @@ class CancelView(TemplateView):
 
 
 decorators = [login_required]
+
+
 @method_decorator(decorators, name="dispatch")
 class DashboardView(TemplateView):
     template_name = 'app_gadgets/dashboard.html'
@@ -84,7 +88,6 @@ class DashboardView(TemplateView):
         return context
 
 
-
 @method_decorator(login_required, name="dispatch")
 class AddToolView(View):
     def get(self, request):
@@ -98,7 +101,6 @@ class AddToolView(View):
             return HttpResponseRedirect(reverse("app_gadgets:dashboard"))
 
 
-
 @method_decorator(login_required, name="dispatch")
 class AddEmployeeView(View):
     def get(self, request):
@@ -110,7 +112,6 @@ class AddEmployeeView(View):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse("app_gadgets:dashboard"))
-
 
 
 @login_required
@@ -129,8 +130,7 @@ def addemp_ajax(request):
 
         data = {'emp': emp_data}
 
-        return render(request,'app_gadgets/newempdata.html', data)
-
+        return render(request, 'app_gadgets/newempdata.html', data)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -148,8 +148,9 @@ class UpdateEmployeeView(View):
             return HttpResponseRedirect(reverse("app_gadgets:dashboard"))
 
 
-
 decorator = [login_required, csrf_exempt]
+
+
 @method_decorator(decorator, name="dispatch")
 class DeleteEmployeeView(View):
     def post(self, request):
@@ -158,7 +159,6 @@ class DeleteEmployeeView(View):
         emp_data = Employee.objects.get(emp_code=emp_code)
         emp_data.delete()
         return JsonResponse({"response": 1})
-
 
 
 class IssueGadgetView(View):
@@ -190,7 +190,6 @@ class IssueGadgetView(View):
             return JsonResponse({"response": "Not Available"})
 
 
-
 @method_decorator(login_required, name="dispatch")
 class UpdateTechboxView(View):
     def get(self, request, id):
@@ -206,8 +205,9 @@ class UpdateTechboxView(View):
             return HttpResponseRedirect(reverse("app_gadgets:gadget_table"))
 
 
-
 decorator = [login_required, csrf_exempt]
+
+
 @method_decorator(decorator, name="dispatch")
 class GadgetTableView(TemplateView):
     template_name = 'app_gadgets/gadget_table.html'
@@ -235,10 +235,50 @@ class IssueTableView(TemplateView):
         return context
 
 
+class IndexView(TemplateView):
+    template_name = "app_gadgets/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        return context
 
 
+def charge(request):
+    if request.method == 'POST':
+        print('Data:', request.POST)
 
-#---------------------------FUNCTION BASED VIEWS-------------------------------------------------------------
+        amount = int(request.POST['amount'])
+
+        customer = stripe.Customer.create(
+            email=request.POST['email'],
+            name=request.POST['username'],
+            address={
+                'line1': '510 Townsend St',
+                'postal_code': '98140',
+                'city': 'San Francisco',
+                'state': 'CA',
+                'country': 'US',
+            },
+            source=request.POST['stripeToken']
+        )
+
+        charge = stripe.Charge.create(
+            customer=customer,
+            amount=amount * 100,
+            currency='inr',
+            description="Donation"
+        )
+
+    return HttpResponseRedirect(reverse('app_gadgets:success', args=[amount]))
+
+
+def successMsg(request, args):
+    amount = args
+    return render(request, 'app_gadgets/success.html', {'amount': amount})
+
+
+# ---------------------------FUNCTION BASED VIEWS-------------------------------------------------------------
 
 # @login_required
 # def dashboard_view(request):
@@ -362,7 +402,6 @@ class IssueTableView(TemplateView):
 #     return render(request, 'app_gadgets/updatetool.html', context={'form': form})
 
 
-
 # def gadget_table_view(request):
 #     gadget_data = TechBox.objects.all()
 #     return render(request, 'app_gadgets/gadget_table.html', context={'gadget_data': gadget_data})
@@ -371,3 +410,16 @@ class IssueTableView(TemplateView):
 # def issue_table_view(request):
 #     issued_gadget_data = IssueGadget.objects.all()
 #     return render(request, 'app_gadgets/issue_table.html', context={'issued_gadget_data': issued_gadget_data})
+
+
+# customer = stripe.Customer.create(
+        #     name='Jenny Rosen',
+        #     address={
+        #         'line1': '510 Townsend St',
+        #         'postal_code': '98140',
+        #         'city': 'San Francisco',
+        #         'state': 'CA',
+        #         'country': 'US',
+        #     },
+        #     source=request.POST['stripeToken'],
+        # )

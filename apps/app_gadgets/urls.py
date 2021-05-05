@@ -19,19 +19,20 @@ urlpatterns = [
     path('gadget_table/', views.GadgetTableView.as_view(), name="gadget_table"),
     path('issue_table/', views.IssueTableView.as_view(), name="issue_table"),
 
+
     path('gadget_api/', api_views.TechBoxAPI.as_view(), name='gadget_api'),
     path('gadget_api/<int:pk>/', api_views.TechBoxAPI.as_view(), name='gadget_api'),
-
     path('issue_gadget_api/', api_views.IssueGadgetAPI.as_view(), name='issue_gadget_api'),
-
     path('gettoken/', obtain_auth_token),
 
+
     path('product_landing_page/<pk>', views.ProductLandingPageView.as_view(), name="product_landing_page"),
-
     path('create-checkout-session/<pk>/', views.CreateCheckoutSessionView.as_view(), name="create-checkout-session"),
-
     path('cancel/', views.CancelView.as_view(), name="cancel"),
     path('success/', views.SuccessView.as_view(), name="success"),
+    path('donation/', views.IndexView.as_view(), name="donation"),
+    path('charge/', views.charge, name="charge"),
+    path('success/<str:args>/', views.successMsg, name="success"),
 
 
 ]
