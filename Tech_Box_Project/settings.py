@@ -28,8 +28,8 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'ji^#5#f0sqf%4x)&67pdx6k!u0&xlr3^pkdm&rx5%+)46u4v9*'
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'ji^#5#f0sqf%4x)&67pdx6k!u0&xlr3^pkdm&rx5%+)46u4v9*'
+# SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -160,7 +160,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'vaibhav.thoughtwin@gmail.com'
-EMAIL_HOST_PASSWORD = 'vaibhav12345'
+EMAIL_HOST_PASSWORD = 'sun@123shine'
 EMAIL_USE_SSL = False
 
 
