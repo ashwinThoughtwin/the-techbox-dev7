@@ -181,7 +181,7 @@ class IssueGadgetView(View):
                                               emp_code=request.POST.get('emp_code'))
             # print(data.expire_date)
             expire_date = data.expire_date
-            send_confirm_email_task.delay(subject, message, recipient)
+            # send_confirm_email_task.delay(subject, message, recipient)
             # send_remember_email_task.delay(subject1, message1, recipient, expire_date)
             # send_remember_email_task.apply_async((subject1, message1, recipient, expire_date), countdown=300)
 
