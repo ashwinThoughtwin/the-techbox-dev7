@@ -14,6 +14,7 @@ from django.views import View
 import stripe
 from django.conf import settings
 from django.views.decorators.cache import cache_page
+from django.contrib import messages
 
 # Create your views here.
 
@@ -174,13 +175,13 @@ class IssueGadgetView(View):
             # import pdb;pdb.set_trace()
             subject = "Regarding Borrowing Gadgets From TechBox."
             subject1 = "Regarding Returning of gadget that is Issued to you."
-            message = f"{selected_gadget.name} is issued to {recipient}"
+            message = f"{selected_gadget.name} is issued to {recipient} using celery."
             message1 = f"Returning date of {selected_gadget.name} has reached.kindly return the gadget on time."
             data = IssueGadget.objects.create(gadget_name=TechBox.objects.get(name=selected_gadget.name),
                                               emp_code=request.POST.get('emp_code'))
             # print(data.expire_date)
             expire_date = data.expire_date
-            # send_confirm_email_task.delay(subject, message, recipient)
+            send_confirm_email_task.delay(subject, message, recipient)
             # send_remember_email_task.delay(subject1, message1, recipient, expire_date)
             # send_remember_email_task.apply_async((subject1, message1, recipient, expire_date), countdown=300)
 
@@ -202,6 +203,7 @@ class UpdateTechboxView(View):
         form = UpdateToolForm(request.POST, instance=data)
         if form.is_valid():
             form.save()
+            # messages.success(request, "Gadget Added Successfully!!!")
             return HttpResponseRedirect(reverse("app_gadgets:gadget_table"))
 
 

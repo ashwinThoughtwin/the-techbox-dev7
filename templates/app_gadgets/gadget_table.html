@@ -120,6 +120,11 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
+<!--                        {% if messages %}-->
+<!--                        {% for message in messages %}-->
+<!--                        <p {% if message.tags %} class="alert-{{ message.tags }}" {% endif %}>{{ message }}</p>-->
+<!--                        {% endfor %}-->
+<!--                        {% endif %}-->
                         <h1 class="mt-4">Gadgets Table</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="{% url 'app_gadgets:dashboard' %}">Dashboard</a></li>
